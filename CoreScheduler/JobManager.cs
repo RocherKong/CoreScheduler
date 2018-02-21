@@ -28,6 +28,73 @@ namespace CoreScheduler
                 return _useUtc ? DateTime.UtcNow : DateTime.Now;
             }
         }
+
+        /// <summary>
+        /// Initalize Schedules NextRunTime While Run Time. 
+        /// </summary>
+        /// <param name="schedules"></param>
+        /// <returns></returns>
+        private static IEnumerable<Schedule> CalculateNextRun(IEnumerable<Schedule> schedules)
+        {
+            foreach (var schedule in schedules)
+            {
+                //calc null nextruntime schedule
+                if (schedule.CalculateNextRunTime == null)
+                {
+                    if (schedule.DelayRunFor > TimeSpan.Zero)
+                    {
+                        //delayed Job
+                        schedule.NextRun = Now.Add(schedule.DelayRunFor);
+                        _schedules.Add(schedule);
+                    }
+                    else
+                    {
+                        //run now
+                        yield return schedule;
+                    }
+                    var hasAdded = false;
+                    foreach (var child in schedule.AdditionalSchedules.Where(x => x.CalculateNextRunTime != null))
+                    {
+                        var nextRun = child.CalculateNextRunTime(Now.Add(child.DelayRunFor).AddMilliseconds(1));
+                        if (!hasAdded || schedule.NextRun > nextRun)
+                        {
+                            schedule.NextRun = nextRun;
+                            hasAdded = true;
+                        }
+                    }
+                }
+                else
+                {
+                    schedule.NextRun = schedule.CalculateNextRunTime(Now.Add(schedule.DelayRunFor));
+                    _schedules.Add(schedule);
+                }
+
+                foreach (var childSchedule in schedule.AdditionalSchedules)
+                {
+                    if (childSchedule.CalculateNextRunTime == null)
+                    {
+                        if (childSchedule.DelayRunFor > TimeSpan.Zero)
+                        {
+                            //delayed Job
+                            childSchedule.NextRun = Now.Add(childSchedule.DelayRunFor);
+                            _schedules.Add(childSchedule);
+                        }
+                        else
+                        {
+                            //run now
+                            yield return childSchedule;
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        childSchedule.NextRun = childSchedule.CalculateNextRunTime(Now.Add(childSchedule.DelayRunFor));
+                        _schedules.Add(childSchedule);
+                    }
+                }
+            }
+        }
+
         private static void ScheduleJobs()
         {
             _timer.Change(Timeout.Infinite, Timeout.Infinite);
