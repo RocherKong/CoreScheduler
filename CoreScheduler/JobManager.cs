@@ -31,6 +31,38 @@ namespace CoreScheduler
 
         private static IJobFactory _jobFactory;
 
+        public static IJobFactory JobFactory
+        {
+            get { return _jobFactory ?? new JobFactory(); }
+
+            set { _jobFactory = value; }
+        }
+        #region Start Stop Initalize
+        public static void Initialize(params Registry[] registries)
+        {
+            LoadNextRunTime(registries);
+            Start();
+        }
+
+        public static void LoadNextRunTime(params Registry[] registries)
+        {
+            if (registries == null)
+            {
+                throw new ArgumentNullException("Registries can't be null!");
+            }
+            CalculateNextRun(registries.SelectMany(r => r.Schedules)).ToList().ForEach(RunJob);
+        }
+
+        public static void Start()
+        {
+            ScheduleJobs();
+        }
+
+        public static void Stop()
+        {
+            _timer.Change(Timeout.Infinite, Timeout.Infinite);
+        }
+        #endregion
 
         /// <summary>
         /// Initalize Schedules NextRunTime While Run Time. 
@@ -224,7 +256,7 @@ namespace CoreScheduler
         {
             return () =>
             {
-                var job = _jobFactory.GetInstance<T>();
+                var job = JobFactory.GetInstance<T>();
                 try
                 {
                     job.Execute();
@@ -288,8 +320,7 @@ namespace CoreScheduler
 
         private static void DisposeIfNeeded(IJob job)
         {
-            var disposable = job as IDisposable;
-            if (disposable != null)
+            if (job is IDisposable disposable)
             {
                 disposable.Dispose();
             }

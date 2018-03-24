@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoreScheduler.Unit;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -57,6 +58,18 @@ namespace CoreScheduler
             Reentrant = Reentrant ?? new object();
             return this;
         }
+
+        #region Unit
+        public SepcificTimeUnit ToRunNow()
+        {
+            return new SepcificTimeUnit(this);
+        }
+
+        public TimeUnit ToRunEvery(int interval)
+        {
+            return new TimeUnit(this, interval) { };
+        }
+        #endregion
 
     }
 }
