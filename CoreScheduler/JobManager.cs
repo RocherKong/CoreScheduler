@@ -29,7 +29,7 @@ namespace CoreScheduler
             }
         }
 
-       
+        private static IJobFactory _jobFactory;
 
 
         /// <summary>
@@ -218,6 +218,81 @@ namespace CoreScheduler
                 _running.Add(tuple);
             }
             task.Start();
+        }
+
+        internal static Action GetJobAction<T>() where T : IJob
+        {
+            return () =>
+            {
+                var job = _jobFactory.GetInstance<T>();
+                try
+                {
+                    job.Execute();
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+                finally
+                {
+                    DisposeIfNeeded(job);
+                }
+            };
+        }
+
+        internal static Action GetJobAction(IJob job)
+        {
+            return () =>
+            {
+                try
+                {
+                    job.Execute();
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+                finally
+                {
+                    DisposeIfNeeded(job);
+                }
+            };
+        }
+
+        internal static Action GetJobAction(Func<IJob> jobFactory)
+        {
+            return () =>
+            {
+                var job = jobFactory();
+                if (job == null)
+                {
+                    throw new InvalidOperationException("The Given Func<IJob> returned null!");
+                }
+                try
+                {
+                    job.Execute();
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+                finally
+                {
+                    DisposeIfNeeded(job);
+                }
+            };
+        }
+
+        private static void DisposeIfNeeded(IJob job)
+        {
+            var disposable = job as IDisposable;
+            if (disposable != null)
+            {
+                disposable.Dispose();
+            }
         }
     }
 }

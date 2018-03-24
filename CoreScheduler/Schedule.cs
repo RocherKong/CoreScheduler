@@ -52,7 +52,11 @@ namespace CoreScheduler
         internal object Reentrant { get; set; }
 
 
-
+        public Schedule NonReentrantInstance()
+        {
+            Reentrant = Reentrant ?? new object();
+            return this;
+        }
 
     }
 }
