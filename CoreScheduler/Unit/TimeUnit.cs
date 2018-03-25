@@ -28,5 +28,15 @@ namespace CoreScheduler.Unit
         {
             return new Unit.MinuteUnit(_schedule, _duration);
         }
+
+        public HourUnit HourUnit()
+        {
+            return new Unit.HourUnit(_schedule, _duration);
+        }
+
+        public DayUnit DayUnit()
+        {
+            return new DayUnit(_schedule, _duration);
+        }
     }
 }
