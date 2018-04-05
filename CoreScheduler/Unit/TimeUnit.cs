@@ -24,6 +24,12 @@ namespace CoreScheduler.Unit
             return new SecondUnit(_schedule, _duration);
         }
 
+        public SecondUnit DelaySecondUnit(int delaySecondUnit)
+        {
+            _schedule.DelayRunFor = TimeSpan.FromSeconds(delaySecondUnit);
+            return new SecondUnit(_schedule, _duration);
+        }
+
         public MinuteUnit MinuteUnit()
         {
             return new Unit.MinuteUnit(_schedule, _duration);

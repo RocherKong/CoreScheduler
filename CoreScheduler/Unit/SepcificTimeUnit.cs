@@ -32,5 +32,6 @@ namespace CoreScheduler.Unit
             Child.Parent.AdditionalSchedules.Add(Child);
             return Child.ToRunEvery(interval);
         }
+
     }
 }

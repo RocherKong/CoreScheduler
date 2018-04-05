@@ -10,7 +10,6 @@ namespace CoreScheduler.Unit
         {
             this._schedule.CalculateNextRunTime = x => x.AddSeconds(_duration);
         }
-
         public Schedule GetSchedule => this._schedule;
     }
 }
