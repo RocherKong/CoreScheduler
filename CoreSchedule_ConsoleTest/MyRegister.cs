@@ -10,7 +10,7 @@ namespace CoreSchedule_ConsoleTest
     {
         public MyRegister()
         {
-            Schedule<DemoJob>().ToRunNow().AndEvery(3).DelaySecondUnit(10);
+            Schedule<DemoJob>().ToRunNow().AndEvery(3).SecondUnit();
         }
     }
 }

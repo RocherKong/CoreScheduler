@@ -37,7 +37,25 @@ namespace CoreSchedule_ConsoleTest
 
             app.UseMvc();
 
+            JobManager.JobStart += JobManager_JobStart;
+            JobManager.JobException += JobManager_JobException;
+            JobManager.JobEnd += JobManager_JobEnd;
             JobManager.Initialize(new MyRegister());
+        }
+
+        private void JobManager_JobEnd(CoreScheduler.Event.JobEndedEvent obj)
+        {
+            Console.WriteLine("Job End:" + obj.Duration);
+        }
+
+        private void JobManager_JobException(CoreScheduler.Event.JobExceptionRaisedEvent obj)
+        {
+            Console.WriteLine("Job Error:" + obj.Message);
+        }
+
+        private void JobManager_JobStart(CoreScheduler.Event.JobStartedEvent obj)
+        {
+            Console.WriteLine("Job Start");
         }
     }
 }
