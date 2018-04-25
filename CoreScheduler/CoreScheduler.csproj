@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFrameworks>net46;netstandard1.3</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>一款轻量级任务调度器。满足大部分定时调用API的业务场景。支持每秒，分，时，天，周，月的单位调度。
+具体用法请见测试项目</Description>
   </PropertyGroup>
 
 </Project>
