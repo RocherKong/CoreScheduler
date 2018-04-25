@@ -3,8 +3,16 @@
   <PropertyGroup>
     <TargetFrameworks>net46;netstandard1.3</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>一款轻量级任务调度器。满足大部分定时调用API的业务场景。支持每秒，分，时，天，周，月的单位调度。
+    <Description>一款轻量级任务调度器。同时支持.Net Core/.Net Framework. 满足大部分定时调用API的业务场景。支持每秒，分，时，天，周，月的单位调度。
 具体用法请见测试项目</Description>
+    <PackageId>TimerScheduler</PackageId>
+    <Authors>rocher</Authors>
+    <Company>rocher</Company>
+    <Product>CoreScheduler</Product>
+    <PackageReleaseNotes>A lightweight task scheduler. The business scenario that meets most of the timing calls to API. Supports unit scheduling per second, minutes, hours, days, weeks, and months. See the test project for specific usage.
+легкий  планировщик задач  .  удовлетворить  большинство  сроки  называют API  сценариев.  поддержка  в секунду,  очков,  день  ,  неделю, месяц  , когда  Группа  планирования  .  См.  , в частности, использование  испытания проекта  .
+Eine leichte task - Scheduler.Die meisten timing den api - szenario.Unterstützung der pro sekunde, minuten, stunden, Tage, Wochen, monaten einheiten geplant.Besondere Verwendung siehe test - PROJEKT.
+وهي خفيفة الوزن في   جدولة المهام   .   تلبية   معظم   توقيت   استدعاء API   سيناريوهات الأعمال   .......   دعم   في الثانية،   ،   ،   أيام،   أسابيع،   أشهر   وحدة   الجدولة.   انظر   البند اختبار   استخدام محدد   .......</PackageReleaseNotes>
   </PropertyGroup>
 
 </Project>
